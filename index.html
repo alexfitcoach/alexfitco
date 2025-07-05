@@ -551,6 +551,29 @@ There were low days when my motivation level went to negative, but Aman Sir alwa
             </div>
 
         </footer>
+        <script>
+// Disable right-click context menu
+document.addEventListener('contextmenu', function(e) {
+  e.preventDefault();
+});
+
+// Disable specific key shortcuts for Inspect
+document.addEventListener('keydown', function(e) {
+  // F12
+  if (e.key === 'F12') {
+    e.preventDefault();
+  }
+  // Ctrl+Shift+I, Ctrl+Shift+J, Ctrl+Shift+C
+  if (e.ctrlKey && e.shiftKey && (e.key === 'I' || e.key === 'J' || e.key === 'C')) {
+    e.preventDefault();
+  }
+  // Ctrl+U (view page source)
+  if (e.ctrlKey && e.key === 'U') {
+    e.preventDefault();
+  }
+});
+</script>
+
         <script src="./index.js"></script>
         <script src="https://cdn.rawgit.com/michalsnik/aos/2.1.1/dist/aos.js"></script>
         <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
