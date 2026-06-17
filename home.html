@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <title>Dashboard | Alex Fitness</title>
+    <style>
+        body { font-family: Arial; text-align: center; padding: 50px; }
+        button { background: #dc3545; color: #fff; padding: 10px 20px; border: none; border-radius: 5px; cursor: pointer; font-size: 16px; }
+    </style>
+</head>
+<body>
+    <h1>Welcome to Your Dashboard!</h1>
+    <p>This is your private member area.</p>
+    <button onclick="logout()">Logout</button>
+
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script>
+        const SUPABASE_URL = 'https://yvxttvoaxyhyncipxke.p.supabase.co';
+        const SUPABASE_ANON_KEY = 'sb_publishable_ojFR7TDAAPuB8lWC7nKw5A_E4FAbo1O';
+        const supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+        async function logout() {
+            await supabase.auth.signOut();
+            window.location.href = "index.html";
+        }
+    </script>
+</body>
+</html>
