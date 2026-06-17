@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Auth Test</title>
+</head>
+<body>
+    <h2>Register</h2>
+    <input id="email" type="email" placeholder="Email"><br><br>
+    <input id="password" type="password" placeholder="Password"><br><br>
+    <button id="registerBtn">Register</button>
+    <p id="message"></p>
+
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script>
+        (function() {
+            console.log('Script started');
+
+            const supabase = window.supabase.createClient(
+                'https://yvxttvoaxyhyncipxke.p.supabase.co',
+                'sb_publishable_ojFR7TDAAPuB8lWC7nKw5A_E4FAbo1O'
+            );
+
+            document.getElementById('registerBtn').addEventListener('click', async function() {
+                console.log('Button clicked');
+                const email = document.getElementById('email').value;
+                const password = document.getElementById('password').value;
+                const msg = document.getElementById('message');
+
+                if (!email || !password) {
+                    msg.innerText = 'Please fill all fields.';
+                    return;
+                }
+
+                const { data, error } = await supabase.auth.signUp({ email, password });
+
+                if (error) {
+                    console.error('Supabase error:', error);
+                    msg.innerText = 'Error: ' + error.message;
+                } else {
+                    console.log('Success:', data);
+                    msg.innerText = 'Registration successful! You can now login.';
+                }
+            });
+        })();
+    </script>
+</body>
+</html>
