@@ -3,70 +3,58 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Login | Alex Fitness</title>
+    <title>Alex Fitness | Home</title>
     <style>
-        body {
-            font-family: Arial, sans-serif;
-            background: #f4f4f4;
-            text-align: center;
-            padding: 50px;
-        }
-        .box {
-            background: white;
-            max-width: 400px;
-            margin: auto;
-            padding: 30px;
-            border-radius: 10px;
-            box-shadow: 0 0 10px #ccc;
-        }
-        input {
-            width: 90%;
-            padding: 10px;
-            margin: 10px 0;
-            border: 1px solid #ccc;
-            border-radius: 5px;
-        }
-        button {
-            background: #28a745;
-            color: white;
-            padding: 12px 30px;
-            border: none;
-            border-radius: 5px;
-            cursor: pointer;
-            font-size: 16px;
-        }
-        a {
-            color: #007bff;
-            text-decoration: none;
-        }
+        body { font-family: Arial, sans-serif; margin: 0; padding: 0; background: #f9f9f9; }
+        header { background: #1e2a3a; color: white; padding: 15px 30px; display: flex; justify-content: space-between; align-items: center; }
+        nav a { color: white; text-decoration: none; margin-left: 20px; font-weight: bold; }
+        nav a:hover { color: #28a745; }
+        .hero { text-align: center; padding: 80px 20px; background: linear-gradient(135deg, #28a745, #1e2a3a); color: white; }
+        .hero h1 { font-size: 48px; margin: 0; }
+        .hero p { font-size: 20px; margin: 20px 0; }
+        .btn { display: inline-block; background: white; color: #1e2a3a; padding: 12px 30px; border-radius: 5px; text-decoration: none; font-weight: bold; margin: 10px; }
+        .btn:hover { background: #f0f0f0; }
+        .btn-outline { background: transparent; border: 2px solid white; color: white; }
+        .btn-outline:hover { background: white; color: #1e2a3a; }
+        .features { display: flex; justify-content: space-around; padding: 50px 20px; max-width: 1000px; margin: auto; flex-wrap: wrap; }
+        .feature { text-align: center; max-width: 300px; margin: 20px; }
+        footer { background: #1e2a3a; color: white; text-align: center; padding: 20px; margin-top: 40px; }
     </style>
 </head>
 <body>
-    <div class="box">
-        <h2>Login to Your Account</h2>
-        <input id="email" type="email" placeholder="Your Email"><br>
-        <input id="password" type="password" placeholder="Password"><br>
-        <button onclick="login()">Login</button>
-        <p>Don't have an account? <a href="signup.html">Sign Up</a></p>
+    <header>
+        <h2>Alex Fitness</h2>
+        <nav>
+            <a href="index.html">Home</a>
+            <a href="login.html">Login</a>
+            <a href="signup.html">Sign Up</a>
+        </nav>
+    </header>
+
+    <div class="hero">
+        <h1>Transform Your Body with Alex</h1>
+        <p>Personalized workout and nutrition plans for busy professionals.</p>
+        <a href="signup.html" class="btn">Get Started</a>
+        <a href="login.html" class="btn btn-outline">Login</a>
     </div>
 
-    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-    <script>
-        const SUPABASE_URL = 'https://yvxttvoaxyhyncipxke.p.supabase.co';
-        const SUPABASE_ANON_KEY = 'sb_publishable_ojFR7TDAAPuB8lWC7nKw5A_E4FAbo1O';
+    <div class="features">
+        <div class="feature">
+            <h3>🏋️ Custom Workouts</h3>
+            <p>Plans tailored to your goals, whether weight loss, muscle gain, or endurance.</p>
+        </div>
+        <div class="feature">
+            <h3>🥗 Nutrition Coaching</h3>
+            <p>Meal plans and dietary advice to fuel your body and boost performance.</p>
+        </div>
+        <div class="feature">
+            <h3>📈 Track Progress</h3>
+            <p>Monitor your results with regular check-ins and adjustments.</p>
+        </div>
+    </div>
 
-        const supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
-
-        async function login() {
-            const email = document.getElementById('email').value;
-            const password = document.getElementById('password').value;
-            const { data, error } = await supabase.auth.signInWithPassword({ email, password });
-            if (error) alert('Error: ' + error.message);
-            else {
-                alert('Login successful!');
-                window.location.href = "home.html";
-            }
-        }
-    </script>
+    <footer>
+        <p>&copy; 2026 Alex Fitness. All rights reserved.</p>
+    </footer>
 </body>
 </html>
