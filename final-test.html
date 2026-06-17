@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Final Test</title>
+</head>
+<body>
+    <h2>Sign Up Test</h2>
+    <input type="email" id="email" placeholder="Email"><br><br>
+    <input type="password" id="password" placeholder="Password"><br><br>
+    <button id="signupBtn">Sign Up</button>
+    <p id="message"></p>
+
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script>
+        window.onload = function() {
+            console.log("Page loaded.");
+
+            const supabaseUrl = 'https://yvxttvoaxyhyncipxkep.supabase.co';
+            const supabaseAnonKey = 'sb_publishable_ojFR7TDAAPuB8lWC7nKw5A_E4FAbo1O';
+
+            const supabase = window.supabase.createClient(supabaseUrl, supabaseAnonKey);
+            console.log("Supabase client created.");
+
+            document.getElementById('signupBtn').addEventListener('click', async function() {
+                const email = document.getElementById('email').value;
+                const password = document.getElementById('password').value;
+                const msg = document.getElementById('message');
+
+                if (!email || !password) {
+                    msg.innerText = 'Please fill in all fields.';
+                    return;
+                }
+
+                msg.innerText = 'Sending request...';
+                const { data, error } = await supabase.auth.signUp({ email, password });
+
+                if (error) {
+                    console.error('Error:', error);
+                    msg.innerText = 'Error: ' + error.message;
+                } else {
+                    console.log('Success:', data);
+                    msg.innerText = 'Success! Please check your email to confirm.';
+                }
+            });
+        };
+    </script>
+</body>
+</html>
