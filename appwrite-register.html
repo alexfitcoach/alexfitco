@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Register</title>
+</head>
+<body>
+    <h2>Register</h2>
+    <input id="email" type="email" placeholder="Email"><br><br>
+    <input id="password" type="password" placeholder="Password"><br><br>
+    <button id="registerBtn">Register</button>
+    <p id="message"></p>
+
+    <script src="https://cdn.jsdelivr.net/npm/appwrite@14.0.0"></script>
+    <script>
+        // فقط یک بار تعریف شده
+        const client = new Appwrite.Client();
+        client
+            .setEndpoint('https://cloud.appwrite.io/v1')
+            .setProject('YOUR_PROJECT_ID'); // از داشبورد Appwrite بگیر
+
+        const account = new Appwrite.Account(client);
+
+        document.getElementById('registerBtn').addEventListener('click', async function() {
+            const email = document.getElementById('email').value;
+            const password = document.getElementById('password').value;
+            const msg = document.getElementById('message');
+
+            if (!email || !password) {
+                msg.innerText = 'Please fill all fields.';
+                return;
+            }
+
+            try {
+                const response = await account.create('unique()', email, password);
+                msg.innerText = 'Registration successful! You can now login.';
+                console.log('Success:', response);
+            } catch (error) {
+                console.error('Appwrite error:', error);
+                msg.innerText = 'Error: ' + error.message;
+            }
+        });
+    </script>
+</body>
+</html>
