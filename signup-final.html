@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Sign Up</title>
+</head>
+<body>
+    <h2>Create Account</h2>
+    <input type="email" id="email" placeholder="Email"><br><br>
+    <input type="password" id="password" placeholder="Password"><br><br>
+    <button id="btn">Sign Up</button>
+    <p id="message"></p>
+
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script>
+        const supabase = window.supabase.createClient(
+            'https://yvxttvoaxyhyncipxke.p.supabase.co',
+            'sb_publishable_ojFR7TDAAPuB8lWC7nKw5A_E4FAbo1O'
+        );
+
+        document.getElementById('btn').onclick = async function() {
+            const email = document.getElementById('email').value;
+            const password = document.getElementById('password').value;
+            const msg = document.getElementById('message');
+
+            if (!email || !password) {
+                msg.innerText = 'Please fill in all fields.';
+                return;
+            }
+
+            const { data, error } = await supabase.auth.signUp({ email, password });
+
+            if (error) {
+                msg.innerText = 'Error: ' + error.message;
+            } else {
+                msg.innerText = 'Sign up successful! You can now log in.';
+                setTimeout(() => {
+                    window.location.href = "login.html";
+                }, 2000);
+            }
+        };
+    </script>
+</body>
+</html>
