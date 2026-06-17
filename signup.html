@@ -16,7 +16,7 @@
     <div class="box">
         <h2>Create Your Account</h2>
         <input id="email" type="email" placeholder="Your Email"><br>
-        <input id="password" type="password" placeholder="Password (min 6 characters)"><br>
+        <input id="password" type="password" placeholder="Password (min 6 chars)"><br>
         <button onclick="signup()">Sign Up</button>
         <p>Already have an account? <a href="login.html">Login</a></p>
         <p><a href="index.html">← Back to Home</a></p>
@@ -24,13 +24,20 @@
 
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
     <script>
+        console.log('Script loaded successfully!');
+
         const SUPABASE_URL = 'https://yvxttvoaxyhyncipxke.p.supabase.co';
         const SUPABASE_ANON_KEY = 'sb_publishable_ojFR7TDAAPuB8lWC7nKw5A_E4FAbo1O';
         const supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
 
         async function signup() {
+            console.log('Signup function called!');
             const email = document.getElementById('email').value;
             const password = document.getElementById('password').value;
+            if (!email || !password) {
+                alert('Please fill in all fields.');
+                return;
+            }
             const { data, error } = await supabase.auth.signUp({ email, password });
             if (error) {
                 alert('Error: ' + error.message);
