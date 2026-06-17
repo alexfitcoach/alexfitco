@@ -17,38 +17,38 @@
         <h2>Create Your Account</h2>
         <input id="email" type="email" placeholder="Your Email"><br>
         <input id="password" type="password" placeholder="Password (min 6 chars)"><br>
-        <button onclick="signup()">Sign Up</button>
+        <button id="signupBtn">Sign Up</button>
         <p>Already have an account? <a href="login.html">Login</a></p>
         <p><a href="index.html">← Back to Home</a></p>
     </div>
 
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
     <script>
-        console.log('Script loaded successfully!');
-
+        // Create supabase client only once
         const supabase = window.supabase.createClient(
             'https://yvxttvoaxyhyncipxke.p.supabase.co',
             'sb_publishable_ojFR7TDAAPuB8lWC7nKw5A_E4FAbo1O'
         );
 
-        function signup() {
-            console.log('Signup function called!');
+        // Add click event listener to button
+        document.getElementById('signupBtn').addEventListener('click', async function() {
             const email = document.getElementById('email').value;
             const password = document.getElementById('password').value;
+            
             if (!email || !password) {
                 alert('Please fill in all fields.');
                 return;
             }
-            supabase.auth.signUp({ email, password })
-                .then(({ data, error }) => {
-                    if (error) {
-                        alert('Error: ' + error.message);
-                    } else {
-                        alert('Sign up successful! You can now log in.');
-                        window.location.href = "login.html";
-                    }
-                });
-        }
+
+            const { data, error } = await supabase.auth.signUp({ email, password });
+            
+            if (error) {
+                alert('Error: ' + error.message);
+            } else {
+                alert('Sign up successful! You can now log in.');
+                window.location.href = "login.html";
+            }
+        });
     </script>
 </body>
 </html>
