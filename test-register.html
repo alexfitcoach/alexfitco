@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Test Register</title>
+</head>
+<body>
+    <h2>Test Register</h2>
+    <input id="email" type="email" placeholder="Email"><br><br>
+    <input id="password" type="password" placeholder="Password"><br><br>
+    <button id="btn">Register</button>
+    <p id="msg"></p>
+
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script>
+        // اول ببینیم کد اصلاً اجرا میشه یا نه
+        console.log('Step 1: Script is running');
+
+        const supabase = window.supabase.createClient(
+            'https://yvxttvoaxyhyncipxke.p.supabase.co',
+            'sb_publishable_ojFR7TDAAPuB8lWC7nKw5A_E4FAbo1O'
+        );
+
+        console.log('Step 2: Supabase client created');
+
+        document.getElementById('btn').addEventListener('click', async function() {
+            console.log('Step 3: Button clicked!');
+            const email = document.getElementById('email').value;
+            const password = document.getElementById('password').value;
+            const msg = document.getElementById('msg');
+
+            if (!email || !password) {
+                msg.innerText = 'Please fill all fields.';
+                return;
+            }
+
+            console.log('Step 4: Sending request to Supabase...');
+            const { data, error } = await supabase.auth.signUp({ email, password });
+
+            if (error) {
+                console.error('Step 5: Error:', error);
+                msg.innerText = 'Error: ' + error.message;
+            } else {
+                console.log('Step 5: Success!', data);
+                msg.innerText = 'Success! You can login now.';
+            }
+        });
+    </script>
+</body>
+</html>
