@@ -24,25 +24,30 @@
 
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
     <script>
+        console.log('Script loaded successfully!');
+
         const supabase = window.supabase.createClient(
             'https://yvxttvoaxyhyncipxke.p.supabase.co',
             'sb_publishable_ojFR7TDAAPuB8lWC7nKw5A_E4FAbo1O'
         );
 
-        async function signup() {
+        function signup() {
+            console.log('Signup function called!');
             const email = document.getElementById('email').value;
             const password = document.getElementById('password').value;
             if (!email || !password) {
                 alert('Please fill in all fields.');
                 return;
             }
-            const { data, error } = await supabase.auth.signUp({ email, password });
-            if (error) {
-                alert('Error: ' + error.message);
-            } else {
-                alert('Sign up successful! You can now log in.');
-                window.location.href = "login.html";
-            }
+            supabase.auth.signUp({ email, password })
+                .then(({ data, error }) => {
+                    if (error) {
+                        alert('Error: ' + error.message);
+                    } else {
+                        alert('Sign up successful! You can now log in.');
+                        window.location.href = "login.html";
+                    }
+                });
         }
     </script>
 </body>
