@@ -7,7 +7,7 @@
     <style>
         body { font-family: Arial, sans-serif; background: #f4f4f4; text-align: center; padding: 50px; }
         .box { background: white; max-width: 400px; margin: auto; padding: 30px; border-radius: 10px; box-shadow: 0 0 10px #ccc; }
-        input { width: 90%; padding: 10px; margin: 10px 0; border: 1px solid #ccc; border-radius: 5px; font-size: 20px; letter-spacing: 8px; text-align: center; }
+        input { width: 90%; padding: 10px; margin: 10px 0; border: 1px solid #ccc; border-radius: 5px; font-size: 16px; text-align: center; }
         button { background: #28a745; color: white; padding: 12px 30px; border: none; border-radius: 5px; cursor: pointer; font-size: 16px; }
         a { color: #007bff; text-decoration: none; }
         #message { margin-top: 15px; font-weight: bold; }
@@ -16,14 +16,13 @@
 <body>
     <div class="box">
         <h2>Verify Your Account</h2>
-        <p>We sent a 6-digit code to your email.</p>
-        <input type="text" id="otpCode" placeholder="123456" maxlength="6">
+        <p>Enter the verification code sent to your email.</p>
+        <input type="text" id="otpCode" placeholder="Enter code here">
         <br>
         <button id="verifyBtn">Verify</button>
         <p id="message"></p>
         <p><a href="login.html">← Back to Login</a></p>
     </div>
-
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
     <script>
         window.onload = function() {
@@ -31,23 +30,18 @@
                 'https://yvxttvoaxyhyncipxkep.supabase.co',
                 'sb_publishable_ojFR7TDAAPuB8lWC7nKw5A_E4FAbo1O'
             );
-
             document.getElementById('verifyBtn').addEventListener('click', async function() {
                 const otp = document.getElementById('otpCode').value.trim();
                 const msg = document.getElementById('message');
-
-                if (!otp || otp.length !== 6) {
-                    msg.innerText = 'Please enter the 6-digit code.';
+                if (!otp) {
+                    msg.innerText = 'Please enter the verification code.';
                     return;
                 }
-
                 msg.innerText = 'Verifying...';
-
                 const { data, error } = await supabase.auth.verifyOtp({
                     token_hash: otp,
                     type: 'signup'
                 });
-
                 if (error) {
                     console.error('Verification error:', error);
                     msg.innerText = 'Error: ' + error.message;
