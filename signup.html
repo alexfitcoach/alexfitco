@@ -11,6 +11,8 @@
         button { background: #007bff; color: white; padding: 12px 30px; border: none; border-radius: 5px; cursor: pointer; font-size: 16px; }
         a { color: #28a745; text-decoration: none; }
         #message { margin-top: 15px; font-weight: bold; }
+        .success { color: green; }
+        .error { color: red; }
     </style>
 </head>
 <body>
@@ -23,7 +25,6 @@
         <p>Already have an account? <a href="login.html">Login</a></p>
         <p><a href="index.html">← Back to Home</a></p>
     </div>
-
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
     <script>
         window.onload = function() {
@@ -31,33 +32,32 @@
                 'https://yvxttvoaxyhyncipxkep.supabase.co',
                 'sb_publishable_ojFR7TDAAPuB8lWC7nKw5A_E4FAbo1O'
             );
-
             document.getElementById('signupBtn').addEventListener('click', async function() {
                 const email = document.getElementById('email').value;
                 const password = document.getElementById('password').value;
                 const msg = document.getElementById('message');
-
                 if (!email || !password) {
                     msg.innerText = 'Please fill in all fields.';
+                    msg.className = 'error';
                     return;
                 }
-
                 msg.innerText = 'Creating account...';
-
+                msg.className = '';
                 const { data, error } = await supabase.auth.signUp({
                     email: email,
                     password: password,
+                    options: {
+                        emailRedirectTo: 'https://alexfitcoach.github.io/alexfitco/dashboard.html'
+                    }
                 });
-
                 if (error) {
                     console.error('Signup error:', error);
                     msg.innerText = 'Error: ' + error.message;
+                    msg.className = 'error';
                 } else {
-                    console.log('Signup success:', data);
-                    msg.innerText = 'Check your email for the verification code.';
-                    setTimeout(() => {
-                        window.location.href = "verify-code.html";
-                    }, 2000);
+                    msg.innerHTML = '✅ Account created! Check your email and <strong>click the verification link</strong> to access your dashboard.';
+                    msg.className = 'success';
+                    document.getElementById('signupBtn').disabled = true;
                 }
             });
         };
