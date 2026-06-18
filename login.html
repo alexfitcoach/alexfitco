@@ -11,7 +11,6 @@
         button { background: #28a745; color: white; padding: 12px 30px; border: none; border-radius: 5px; cursor: pointer; font-size: 16px; }
         button:hover { background: #218838; }
         a { color: #007bff; text-decoration: none; }
-        a:hover { text-decoration: underline; }
     </style>
 </head>
 <body>
@@ -19,28 +18,44 @@
         <h2>Login to Your Account</h2>
         <input id="email" type="email" placeholder="Your Email"><br>
         <input id="password" type="password" placeholder="Password"><br>
-        <button onclick="login()">Login</button>
+        <button id="loginBtn">Login</button>
+        <p id="message"></p>
         <p>Don't have an account? <a href="signup.html">Sign Up</a></p>
         <p><a href="index.html">← Back to Home</a></p>
     </div>
 
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
     <script>
-        const SUPABASE_URL = 'https://yvxttvoaxyhyncipxke.p.supabase.co';
-        const SUPABASE_ANON_KEY = 'sb_publishable_ojFR7TDAAPuB8lWC7nKw5A_E4FAbo1O';
-        const supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+        window.onload = function() {
+            const supabaseUrl = 'https://yvxttvoaxyhyncipxkep.supabase.co';
+            const supabaseAnonKey = 'sb_publishable_ojFR7TDAAPuB8lWC7nKw5A_E4FAbo1O';
+            const supabase = window.supabase.createClient(supabaseUrl, supabaseAnonKey);
 
-        async function login() {
-            const email = document.getElementById('email').value;
-            const password = document.getElementById('password').value;
-            const { data, error } = await supabase.auth.signInWithPassword({ email, password });
-            if (error) {
-                alert('Error: ' + error.message);
-            } else {
-                alert('Login successful!');
-                window.location.href = "dashboard.html";
-            }
-        }
+            document.getElementById('loginBtn').addEventListener('click', async function() {
+                const email = document.getElementById('email').value;
+                const password = document.getElementById('password').value;
+                const msg = document.getElementById('message');
+
+                if (!email || !password) {
+                    msg.innerText = 'Please fill in all fields.';
+                    return;
+                }
+
+                msg.innerText = 'Logging in...';
+                const { data, error } = await supabase.auth.signInWithPassword({ email, password });
+
+                if (error) {
+                    console.error('Error:', error);
+                    msg.innerText = 'Error: ' + error.message;
+                } else {
+                    console.log('User:', data.user);
+                    msg.innerText = 'Login successful! Redirecting...';
+                    setTimeout(() => {
+                        window.location.href = "dashboard.html";
+                    }, 1500);
+                }
+            });
+        };
     </script>
 </body>
 </html>
