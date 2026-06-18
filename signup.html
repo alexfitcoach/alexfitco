@@ -1,23 +1,58 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Sign Up | Alex Fitness</title>
     <style>
-        body { font-family: Arial, sans-serif; background: #f4f4f4; text-align: center; padding: 50px; }
-        .box { background: white; max-width: 400px; margin: auto; padding: 30px; border-radius: 10px; box-shadow: 0 0 10px #ccc; }
-        input { width: 90%; padding: 10px; margin: 10px 0; border: 1px solid #ccc; border-radius: 5px; }
-        button { background: #007bff; color: white; padding: 12px 30px; border: none; border-radius: 5px; cursor: pointer; font-size: 16px; }
-        button:hover { background: #0056b3; }
-        a { color: #28a745; text-decoration: none; }
+        body {
+            font-family: Arial, sans-serif;
+            background: #f4f4f4;
+            text-align: center;
+            padding: 50px;
+        }
+        .box {
+            background: white;
+            max-width: 400px;
+            margin: auto;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 0 10px #ccc;
+        }
+        input {
+            width: 90%;
+            padding: 10px;
+            margin: 10px 0;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+        button {
+            background: #007bff;
+            color: white;
+            padding: 12px 30px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
+        }
+        button:hover {
+            background: #0056b3;
+        }
+        a {
+            color: #28a745;
+            text-decoration: none;
+        }
+        #message {
+            margin-top: 15px;
+            color: #333;
+        }
     </style>
 </head>
 <body>
     <div class="box">
         <h2>Create Your Account</h2>
-        <input id="email" type="email" placeholder="Your Email"><br>
-        <input id="password" type="password" placeholder="Password (min 6 chars)"><br>
+        <input id="email" type="email" placeholder="Your Email" /><br />
+        <input id="password" type="password" placeholder="Password (min 6 chars)" /><br />
         <button id="signupBtn">Sign Up</button>
         <p id="message"></p>
         <p>Already have an account? <a href="login.html">Login</a></p>
@@ -26,12 +61,12 @@
 
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
     <script>
-        window.onload = function() {
+        window.onload = function () {
             const supabaseUrl = 'https://yvxttvoaxyhyncipxkep.supabase.co';
             const supabaseAnonKey = 'sb_publishable_ojFR7TDAAPuB8lWC7nKw5A_E4FAbo1O';
             const supabase = window.supabase.createClient(supabaseUrl, supabaseAnonKey);
 
-            document.getElementById('signupBtn').addEventListener('click', async function() {
+            document.getElementById('signupBtn').addEventListener('click', async function () {
                 const email = document.getElementById('email').value;
                 const password = document.getElementById('password').value;
                 const msg = document.getElementById('message');
@@ -41,18 +76,23 @@
                     return;
                 }
 
-                msg.innerText = 'Sending request...';
-                const { data, error } = await supabase.auth.signUp({ email, password });
+                msg.innerText = 'Creating account...';
+
+                const { data, error } = await supabase.auth.signUp({
+                    email: email,
+                    password: password,
+                    options: {
+                        emailRedirectTo: 'https://alexfitcoach.github.io/alexfitco/confirm.html'
+                    }
+                });
 
                 if (error) {
                     console.error('Error:', error);
                     msg.innerText = 'Error: ' + error.message;
                 } else {
                     console.log('Success:', data);
-                    msg.innerText = 'Success! Please check your email to confirm.';
-                    setTimeout(() => {
-                        window.location.href = "login.html";
-                    }, 3000);
+                    msg.innerText =
+                        '✅ A confirmation email has been sent to your email address. Please check your inbox and click the link to confirm your account.';
                 }
             });
         };
