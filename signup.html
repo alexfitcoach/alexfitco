@@ -9,6 +9,7 @@
         .box { background: white; max-width: 400px; margin: auto; padding: 30px; border-radius: 10px; box-shadow: 0 0 10px #ccc; }
         input { width: 90%; padding: 10px; margin: 10px 0; border: 1px solid #ccc; border-radius: 5px; }
         button { background: #007bff; color: white; padding: 12px 30px; border: none; border-radius: 5px; cursor: pointer; font-size: 16px; }
+        button:hover { background: #0056b3; }
         a { color: #28a745; text-decoration: none; }
     </style>
 </head>
@@ -18,37 +19,43 @@
         <input id="email" type="email" placeholder="Your Email"><br>
         <input id="password" type="password" placeholder="Password (min 6 chars)"><br>
         <button id="signupBtn">Sign Up</button>
+        <p id="message"></p>
         <p>Already have an account? <a href="login.html">Login</a></p>
         <p><a href="index.html">← Back to Home</a></p>
     </div>
 
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
     <script>
-        // Create supabase client only once
-        const supabase = window.supabase.createClient(
-            'https://yvxttvoaxyhyncipxke.p.supabase.co',
-            'sb_publishable_ojFR7TDAAPuB8lWC7nKw5A_E4FAbo1O'
-        );
+        window.onload = function() {
+            const supabaseUrl = 'https://yvxttvoaxyhyncipxkep.supabase.co';
+            const supabaseAnonKey = 'sb_publishable_ojFR7TDAAPuB8lWC7nKw5A_E4FAbo1O';
+            const supabase = window.supabase.createClient(supabaseUrl, supabaseAnonKey);
 
-        // Add click event listener to button
-        document.getElementById('signupBtn').addEventListener('click', async function() {
-            const email = document.getElementById('email').value;
-            const password = document.getElementById('password').value;
-            
-            if (!email || !password) {
-                alert('Please fill in all fields.');
-                return;
-            }
+            document.getElementById('signupBtn').addEventListener('click', async function() {
+                const email = document.getElementById('email').value;
+                const password = document.getElementById('password').value;
+                const msg = document.getElementById('message');
 
-            const { data, error } = await supabase.auth.signUp({ email, password });
-            
-            if (error) {
-                alert('Error: ' + error.message);
-            } else {
-                alert('Sign up successful! You can now log in.');
-                window.location.href = "login.html";
-            }
-        });
+                if (!email || !password) {
+                    msg.innerText = 'Please fill in all fields.';
+                    return;
+                }
+
+                msg.innerText = 'Sending request...';
+                const { data, error } = await supabase.auth.signUp({ email, password });
+
+                if (error) {
+                    console.error('Error:', error);
+                    msg.innerText = 'Error: ' + error.message;
+                } else {
+                    console.log('Success:', data);
+                    msg.innerText = 'Success! Please check your email to confirm.';
+                    setTimeout(() => {
+                        window.location.href = "login.html";
+                    }, 3000);
+                }
+            });
+        };
     </script>
 </body>
 </html>
